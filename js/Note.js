@@ -112,5 +112,5 @@ var Board = React.createClass({
 });
 
 
-React.render(<Board count={10}/>,
+React.render(<Board count={50}/>,
     document.getElementById('react-container'));
