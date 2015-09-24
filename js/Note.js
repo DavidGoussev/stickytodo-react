@@ -20,5 +20,5 @@ var Note = React.createClass({
     }
 });
 
-React.render(<Note>Hello World</Note>,
+React.render(<Note>TEST NOTE</Note>,
     document.getElementById('react-container'));
