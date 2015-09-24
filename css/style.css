@@ -53,7 +53,7 @@ div.note:hover > span {
 }
 
 div.note > span {
-    position: absolute;
+    position: relative;
     bottom: 2px;
     right: 2px;
     opacity: 0;
