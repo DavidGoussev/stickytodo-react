@@ -9,6 +9,9 @@ var Note = React.createClass({
             transform: 'rotate(' + this.randomBetween(-15, 15) + 'deg)'
         };
     },
+    componentDidMount: function(){
+        $(this.getDOMNode()).draggable();
+    },
     randomBetween: function(min, max) {
         return (min + Math.ceil(Math.random() * max));
     },
@@ -24,7 +27,8 @@ var Note = React.createClass({
     },
     renderDisplay: function() {
         return (
-            <div className="note">
+            <div className="note"
+                style={this.style}>
                 <p>{this.props.children}</p>
                 <span>
                     <button onClick={this.edit}
@@ -37,7 +41,7 @@ var Note = React.createClass({
     },
     renderForm: function() {
         return (
-            <div className="note">
+            <div className="note" style={this.style}>
             <textarea ref="newText" defaultValue={this.props.children}
             className="form-control"></textarea>
             <button onClick={this.save} className="btn btn-success btn-sm glyphicon glyphicon-floppy-disk" />
@@ -61,7 +65,7 @@ var Board = React.createClass({
                 return new Error('The count property must be a number');
             }
             if (props[propName] > 100) {
-                return new Error("Creating " + props[propName] + " is excessive, yo!");
+                return new Error("Creating " + props[propName] + " notes is ridiculous");
             }
         }
     },
@@ -73,6 +77,17 @@ var Board = React.createClass({
     nextId: function() {
         this.uniqueId = this.uniqueId || 0;
         return this.uniqueId++;
+    },
+    componentWillMount: function() {
+        var self = this;
+        if(this.props.count) {
+            $.getJSON("http://ponyipsum.com/api/?type=all-pony&sentences=" +
+                this.props.count + "&start-with-lorem=1&callback=?", function(results){
+                    results[0].split('. ').forEach(function(sentence){
+                        self.add(sentence.substring(0,40));
+                    });
+                });
+        }
     },
     add: function(text) {
         var arr = this.state.notes;
@@ -107,6 +122,7 @@ var Board = React.createClass({
                     <button className="btn btn-sm btn-success glyphicon glyphicon-plus"
                             onClick={this.add.bind(null, "New Note")}/>
             </div>
+
         );
     }
 });
